@@ -7,6 +7,8 @@ import ComplianceSection from './components/ComplianceSection.jsx'
 import InquirySection from './components/InquirySection.jsx'
 import PortalFooter from './components/PortalFooter.jsx'
 import Modal from './components/Modal.jsx'
+import { LanguageProvider } from './i18n.jsx'
+import { useLanguage } from './useLanguage.js'
 import './App.css'
 
 function App() {
@@ -24,6 +26,24 @@ function App() {
   }
 
   return (
+    <LanguageProvider>
+      <PortalContent
+        modal={modal}
+        openModal={openModal}
+        closeModal={() => setModal(null)}
+        quote={quote}
+        setQuote={setQuote}
+        attachEstimate={attachEstimate}
+        requestSample={requestSample}
+      />
+    </LanguageProvider>
+  )
+}
+
+function PortalContent({ modal, openModal, closeModal, quote, setQuote, attachEstimate, requestSample }) {
+  const { t } = useLanguage()
+
+  return (
     <>
       <PortalHeader onOpenModal={openModal} />
       <main>
@@ -34,10 +54,10 @@ function App() {
         <InquirySection quote={quote} setQuote={setQuote} />
       </main>
       <PortalFooter onOpenModal={openModal} />
-      <a className="whatsapp-float" href="https://wa.me/919152555379?text=Hello%20DURICOVA%20Export%20Desk%2C%20I%20am%20interested%20in%20an%20export%20quotation." target="_blank" rel="noreferrer" aria-label="Chat with the export desk on WhatsApp">
-        <i className="fa-brands fa-whatsapp" aria-hidden="true" /><span>Chat with export desk</span>
+      <a className="whatsapp-float" href="https://wa.me/919152555379?text=Hello%20DURICOVA%20Export%20Desk%2C%20I%20am%20interested%20in%20an%20export%20quotation." target="_blank" rel="noreferrer" aria-label={t('exportDesk')}>
+        <i className="fa-brands fa-whatsapp" aria-hidden="true" /><span>{t('exportDesk')}</span>
       </a>
-      <Modal modal={modal} onClose={() => setModal(null)} />
+      <Modal modal={modal} onClose={closeModal} />
     </>
   )
 }
